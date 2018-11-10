@@ -1,0 +1,186 @@
+//
+// Created by bantdit on 11/5/18.
+//
+
+#ifndef EASY_MP_TYPE_LIST_H
+#define EASY_MP_TYPE_LIST_H
+
+#include <cstddef>
+#include <type_traits>
+
+namespace easy_mp {
+namespace _internal {
+template<typename T, typename... Ts>
+struct get_type_index;
+
+template<typename T, typename... Ts>
+struct get_type_index<T, T, Ts...> : std::integral_constant<size_t, 0>
+{
+};
+
+template<typename T, typename Head, typename... Ts>
+struct get_type_index<T, Head, Ts...>
+  : std::integral_constant<size_t, 1 + get_component_index<T, Ts...>::value>
+{
+};
+
+template<typename T, typename... Ts>
+struct has_type;
+
+template<typename T, typename... Ts>
+struct has_type<T, T, Ts...> : std::true_type
+{
+};
+
+template<typename T, typename Head, typename... Ts>
+struct has_type<T, Head, Ts...> : has_type<T, Ts...>
+{
+};
+
+template<typename T>
+struct has_type<T> : std::false_type
+{
+};
+}
+
+template<typename... Ts>
+struct type_list
+{
+  static constexpr size_t size = sizeof...(Ts);
+
+  template<typename T>
+  struct get_type_index : _internal::get_type_index<T, Ts...>
+  {
+  };
+
+  template<typename T>
+  struct has_type : _internal::has_type<T, Ts...>
+  {
+  };
+};
+
+template<typename TypeList>
+struct tail;
+
+template<typename T, typename... Ts>
+struct tail<type_list<T, Ts...>>
+{
+  using type = type_list<Ts...>;
+};
+
+template<>
+struct tail<type_list<>>
+{
+  using type = type_list<>;
+};
+
+template<typename TypeList>
+struct head;
+
+template<template T, typename... Ts>
+struct head
+{
+  using type = type_list<T>;
+};
+
+template<>
+struct head<type_list<>>
+{
+  using type = type_list<>;
+};
+
+template<typename T1, typename T2>
+struct type_pair
+{
+  using type1 = T1;
+  using type2 = T2;
+};
+
+template<typename... Ts>
+struct concat;
+
+template<typename... Ts, typename... Us>
+struct concat<type_list<Ts...>, type_list<Us...>>
+{
+  using type = type_list<Ts..., Us...>;
+};
+
+template<typename T, typename U>
+struct cartesian_product;
+
+template<typename... Us>
+struct cartesian_product<type_list<>, type_list<Us...>>
+{
+  using type = type_list<>;
+};
+
+template<typename Head, typename... Ts, typename... Us>
+struct cartesian_product<type_list<Head, Ts...>, type_list<Us...>>
+{
+  using type = typename concat<
+    type_list<type_pair<Head, Us>...>,
+    typename cartesian_product<type_list<Ts...>, type_list<Us...>>::type>::type;
+};
+
+template<typename T, typename U>
+struct zip;
+
+template<typename... Us>
+struct zip<type_list<>, type_list<Us...>>
+{
+  using type = type_list<>;
+};
+
+template<typename HeadT, typename... Ts, typename HeadU, typename... Us>
+struct zip<type_list<HeadT, Ts...>, type_list<HeadU, Us....>>
+{
+  using type = typename concat<
+    type_list<type_pair<HeadT, HeadU>>,
+    typename zip<type_list<Ts...>, type_list<Us...>>::type>::type;
+};
+
+template<typename T, typename U>
+struct inner_join;
+
+template<>
+struct inner_join<type_list<>, type_list<>>
+{
+  using type = type_list<>;
+};
+
+template<typename T, typename U>
+struct inner_join<type_list<T>, type_list<U>>
+{
+  using type = type_list<>;
+};
+
+template<typename T>
+struct inner_join<type_list<T>, type_list<T>>
+{
+  using type = type_list<T>;
+};
+
+template<typename... Ts>
+struct inner_join<type_list<>, type_list<Ts...>>
+{
+  using type = type_list<>;
+};
+
+template<typename... Ts>
+struct inner_join<type_list<Ts...>, type_list<>>
+{
+  using type = type_list<>;
+};
+
+template<typename HeadT, typename... Ts, typename HeadU, typename... Us>
+struct inner_join<type_list<HeadT, Ts...>, type_list<HeadU, Us...>>
+{
+  using type = typename concat<
+    typename concat<
+      typename inner_join<type_list<HeadT>, type_list<HeadU>>::type,
+      typename inner_join<type_list<HeadT>, type_list<Us...>>::type>::type,
+    typename inner_join<type_list<Ts...>, type_list<HeadU, Us...>>::type>::type;
+};
+}
+
+#endif // EASY_MP_TYPE_LIST_H
