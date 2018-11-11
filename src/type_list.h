@@ -140,6 +140,47 @@ struct zip<type_list<HeadT, Ts...>, type_list<HeadU, Us....>>
 };
 
 template<typename T, typename U>
+struct subtract;
+
+template<typename Subtrahend>
+struct subtract<type_list<>, Subtrahend>
+{
+using type = type_list<>;
+};
+
+template<typename... Minuends>
+struct subtract<type_list<Minuends...>, type_list<>>
+{
+    using type = type_list<Minuends...>;
+};
+
+template<typename Subtrahend, typename... Minuends>
+struct subtract<type_list<Subtrahend, Minuends...>, Subtrahend>
+{
+    using type = type_list<Minuends...>;
+};
+
+template<typename SubtrahendHead, typename MinuendHead, typename... Minuends>
+struct subtract<type_list<MinuendHead, Minuends...>, Subtrahend>
+{
+    using type = typename concat<
+            type_list<MinuendHead>,
+            typename subtract<type_list<Minuends...>, Subtrahend>::type
+        >::type;
+};
+
+template<typename SubtrahendHead, typename... Subtrahends, typename... Minuends>
+struct subtract<type_list<Minuends...>, type_list<SubtrahendHead, Subtrahends...>>
+{
+    using type = typename concat<
+            typename subtract<
+                typename subtract<type_list<Minuends...>, SubtrahendHead>::type,
+                typename subtract<type_list<Minuends...>, type_list<Subtrahends...>>::type
+            >::type;
+        >::type;
+};
+
+template<typename T, typename U>
 struct inner_join;
 
 template<>
