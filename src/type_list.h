@@ -152,25 +152,23 @@ struct subtract<type_list<Minuends...>, type_list<>>
 };
 
 template<typename Subtrahend, typename... Minuends>
-struct subtract<type_list<Subtrahend, Minuends...>, Subtrahend>
+struct subtract<type_list<Subtrahend, Minuends...>, type_list<Subtrahend>>
 {
     using type = type_list<Minuends...>;
 };
 
-template<typename SubtrahendHead, typename MinuendHead, typename... Minuends>
-struct subtract<type_list<MinuendHead, Minuends...>, Subtrahend>
+template<typename Subtrahend, typename MinuendHead, typename... Minuends>
+struct subtract<type_list<MinuendHead, Minuends...>, type_list<Subtrahend>>
 {
-    using type =
-      typename concat<type_list<MinuendHead>, typename subtract<type_list<Minuends...>, Subtrahend>::type>::type;
+    using type = typename concat<type_list<MinuendHead>,
+                                 typename subtract<type_list<Minuends...>, type_list<Subtrahend>>::type>::type;
 };
 
 template<typename SubtrahendHead, typename... Subtrahends, typename... Minuends>
 struct subtract<type_list<Minuends...>, type_list<SubtrahendHead, Subtrahends...>>
 {
-    using type = typename concat <
-                 typename subtract<typename subtract<type_list<Minuends...>, SubtrahendHead>::type,
-                                   typename subtract<type_list<Minuends...>, type_list<Subtrahends...>>::type>::type;
-    > ::type;
+    using type = typename subtract<typename subtract<type_list<Minuends...>, type_list<SubtrahendHead>>::type,
+                                   type_list<Subtrahends...>>::type;
 };
 
 template<typename T, typename U>
