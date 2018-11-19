@@ -19,7 +19,7 @@ struct get_type_index<T, T, Ts...> : std::integral_constant<size_t, 0>
 };
 
 template<typename T, typename Head, typename... Ts>
-struct get_type_index<T, Head, Ts...> : std::integral_constant<size_t, 1 + get_component_index<T, Ts...>::value>
+struct get_type_index<T, Head, Ts...> : std::integral_constant<size_t, 1 + get_type_index<T, Ts...>::value>
 {
 };
 
@@ -76,8 +76,8 @@ struct tail<type_list<>>
 template<typename TypeList>
 struct head;
 
-template<template T, typename... Ts>
-struct head
+template<typename T, typename... Ts>
+struct head<type_list<T, Ts...>>
 {
     using type = type_list<T>;
 };
@@ -130,7 +130,7 @@ struct zip<type_list<>, type_list<Us...>>
 };
 
 template<typename HeadT, typename... Ts, typename HeadU, typename... Us>
-struct zip<type_list<HeadT, Ts...>, type_list<HeadU, Us....>>
+struct zip<type_list<HeadT, Ts...>, type_list<HeadU, Us...>>
 {
     using type =
       typename concat<type_list<type_pair<HeadT, HeadU>>, typename zip<type_list<Ts...>, type_list<Us...>>::type>::type;
@@ -215,7 +215,7 @@ struct inner_join<type_list<HeadT, Ts...>, type_list<HeadU, Us...>>
 template<typename T, typename U>
 struct outer_join;
 
-template<template... Ts, typename... Us>
+template<typename... Ts, typename... Us>
 struct outer_join<type_list<Ts...>, type_list<Us...>>
 {
 private:
