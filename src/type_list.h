@@ -211,6 +211,46 @@ struct inner_join<type_list<HeadT, Ts...>, type_list<HeadU, Us...>>
                                                  typename inner_join<type_list<HeadT>, type_list<Us...>>::type>::type,
                                  typename inner_join<type_list<Ts...>, type_list<HeadU, Us...>>::type>::type;
 };
+
+template<typename T, typename U>
+struct outer_join;
+
+template<template... Ts, typename... Us>
+struct outer_join<type_list<Ts...>, type_list<Us...>>
+{
+private:
+    using _intersect = typename inner_join<type_list<Ts...>, type_list<Us...>>::type;
+
+public:
+    using type = typename concat<typename subtract<type_list<Ts...>, _intersect>::type,
+                                 typename subtract<type_list<Us...>, _intersect>::type>::type;
+};
+
+template<typename T, typename U>
+struct left_outer_join;
+
+template<typename... Ts, typename... Us>
+struct left_outer_join<type_list<Ts...>, type_list<Us...>>
+{
+private:
+    using _intersect = typename inner_join<type_list<Ts...>, type_list<Us...>>::type;
+
+public:
+    using type = typename subtract<type_list<Ts...>, _intersect>::type;
+};
+
+template<typename T, typename U>
+struct right_outer_join;
+
+template<typename... Ts, typename... Us>
+struct right_outer_join<type_list<Ts...>, type_list<Us...>>
+{
+private:
+    using _intersect = typename inner_join<type_list<Ts...>, type_list<Us...>>::type;
+
+public:
+    using type = typename subtract<type_list<Us...>, _intersect>::type;
+};
 }
 
 #endif // EASY_MP_TYPE_LIST_H
