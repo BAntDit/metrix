@@ -10,3 +10,7 @@ set(ALL_SOURCES_FOR_STYLE_CORRECTION ${PUBLIC_HEADERS})
 
 include(ClangFormat.cmake)
 CODE_STYLE_CORRECTION("${ALL_SOURCES_FOR_STYLE_CORRECTION}")
+
+find_package(GTest REQUIRED)
+
+add_subdirectory("test")
