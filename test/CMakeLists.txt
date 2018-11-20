@@ -26,4 +26,4 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
             )
 endif()
 
-target_link_libraries(${PROJECT_NAME} gtest gtest_main)
+target_link_libraries(${PROJECT_NAME} gtest gtest_main -pthread)
