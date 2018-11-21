@@ -45,6 +45,15 @@
     return ::testing::AssertionSuccess();
 }
 
+::testing::AssertionResult type_list_cart_prod() {
+    static_assert(std::is_same_v<
+        typename easy_mp::cartesian_product<easy_mp::type_list<uint8_t>, easy_mp::type_list<uint16_t, int32_t >>::type,
+        easy_mp::type_list<easy_mp::type_pair<uint8_t, uint16_t>, easy_mp::type_pair<uint8_t, int32_t>>
+    >);
+
+    return ::testing::AssertionSuccess();
+}
+
 TEST(TYPE_LIST_TEST, type_list_internals) {
     EXPECT_TRUE(type_list_test());
 }
@@ -55,5 +64,9 @@ TEST(HEAD_TAIL_TEST, type_list_head_tail_test) {
 
 TEST(CONCAT_TEST, type_list_concat_test) {
     EXPECT_TRUE(type_list_concat());
+}
+
+TEST(CART_PROD_TEST, type_list_cart_prod_test) {
+    EXPECT_TRUE(type_list_cart_prod());
 }
 
