@@ -139,6 +139,12 @@ struct zip<type_list<HeadT, Ts...>, type_list<HeadU, Us...>>
 template<typename T, typename U>
 struct subtract;
 
+template<>
+struct subtract<type_list<>, type_list<>>
+{
+    using type = type_list<>;
+};
+
 template<typename Subtrahend>
 struct subtract<type_list<>, Subtrahend>
 {
