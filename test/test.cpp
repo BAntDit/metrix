@@ -54,6 +54,44 @@
     return ::testing::AssertionSuccess();
 }
 
+::testing::AssertionResult type_list_zip() {
+    static_assert(std::is_same_v<
+        typename easy_mp::zip<
+            easy_mp::type_list<uint8_t, int8_t, int16_t>,
+            easy_mp::type_list<int32_t, uint16_t, int64_t>>::type,
+        easy_mp::type_list<
+            easy_mp::type_pair<uint8_t, int32_t>,
+            easy_mp::type_pair<int8_t, uint16_t>,
+            easy_mp::type_pair<int16_t, int64_t>
+        >
+    >);
+
+    return ::testing::AssertionSuccess();
+}
+
+::testing::AssertionResult type_list_subtract() {
+    static_assert(std::is_same_v<
+        typename easy_mp::subtract<
+            easy_mp::type_list<uint8_t, int8_t, int16_t, int64_t>,
+            easy_mp::type_list<int8_t, int16_t>>::type,
+        easy_mp::type_list<uint8_t, int64_t>
+    >);
+
+    return ::testing::AssertionSuccess();
+}
+
+::testing::AssertionResult type_list_inner_join() {
+    static_assert(std::is_same_v<
+        typename easy_mp::inner_join<
+            easy_mp::type_list<uint8_t, int8_t, uint16_t, uint32_t>,
+            easy_mp::type_list<uint64_t, int8_t, uint32_t, int16_t>
+        >::type,
+        easy_mp::type_list<int8_t, uint32_t>
+    >);
+
+    return ::testing::AssertionSuccess();
+}
+
 TEST(TYPE_LIST_TEST, type_list_internals) {
     EXPECT_TRUE(type_list_test());
 }
@@ -70,3 +108,14 @@ TEST(CART_PROD_TEST, type_list_cart_prod_test) {
     EXPECT_TRUE(type_list_cart_prod());
 }
 
+TEST(ZIP_TEST, type_list_zip_test) {
+    EXPECT_TRUE(type_list_zip());
+}
+
+TEST(SUBTRACT_TEST, type_list_subtract_test) {
+    EXPECT_TRUE(type_list_subtract());
+}
+
+TEST(INNER_JOIN_TEST, type_list_inner_join_test) {
+    EXPECT_TRUE(type_list_inner_join());
+}
