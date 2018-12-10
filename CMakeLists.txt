@@ -32,11 +32,12 @@ if (TESTS)
 
 endif()
 
-install(
-    DIRECTORY "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
-    DESTINATION "$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>"
-    FILES_MATCHING PATTERN "*.h"
-)
+foreach (header ${PUBLIC_HEADERS})
+    install(
+        FILES ${header}
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    )
+endforeach()
 
 install(
     TARGETS ${PROJECT_NAME}
