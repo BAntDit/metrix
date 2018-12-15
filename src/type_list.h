@@ -40,6 +40,21 @@ template<typename T>
 struct has_type<T> : std::false_type
 {
 };
+
+template<typename Index, typename... Ts>
+struct get_type;
+
+template<typename Head, typename... Ts>
+struct get_type<std::integral_constant<size_t, 0>, Head, Ts...>
+{
+    using type = Head;
+};
+
+template<size_t index, typename Head, typename... Ts>
+struct get_type<std::integral_constant<size_t, index>, Head, Ts...>
+  : get_type<std::integral_constant<size_t, index - 1>, Ts...>
+{
+};
 }
 
 template<typename... Ts>
@@ -55,6 +70,12 @@ struct type_list
     template<typename T>
     struct has_type : _internal::has_type<T, Ts...>
     {
+    };
+
+    template<size_t index>
+    struct get_type : _internal::get_type<std::integral_constant<size_t, index>, Ts...>
+    {
+        static_assert(index < sizeof...(Ts));
     };
 };
 

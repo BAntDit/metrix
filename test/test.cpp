@@ -22,6 +22,10 @@
 
     static_assert(easy_mp::type_list<uint8_t, uint16_t, int32_t>::has_type<int64_t>::value == false);
 
+    static_assert(std::is_same_v<
+        typename easy_mp::type_list<uint8_t, uint16_t, int8_t, int16_t>::get_type<1>::type,
+        uint16_t>);
+
     return ::testing::AssertionSuccess();
 }
 
