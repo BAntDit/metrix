@@ -11,6 +11,8 @@ set(PUBLIC_HEADERS src/type_list.h)
 
 add_library(${PROJECT_NAME} INTERFACE)
 
+# set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
+
 target_include_directories(
     ${PROJECT_NAME} INTERFACE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
@@ -33,22 +35,23 @@ if (TESTS)
 endif()
 
 foreach (header ${PUBLIC_HEADERS})
-    install(
-        FILES ${header}
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-    )
+install(
+    FILES ${header}
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
+)
 endforeach()
 
 install(
     TARGETS ${PROJECT_NAME}
     EXPORT  ${PROJECT_NAME}
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    # PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
 )
 
 install(
     EXPORT ${PROJECT_NAME}
     FILE ${PROJECT_NAME}Config.cmake
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/easy-mp/CMake
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/CMake
 )
 
 export(
