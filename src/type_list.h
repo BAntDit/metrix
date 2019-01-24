@@ -15,31 +15,26 @@ struct get_type_index;
 
 template<typename T, typename... Ts>
 struct get_type_index<T, T, Ts...> : std::integral_constant<size_t, 0>
-{
-};
+{};
 
 template<typename T, typename Head, typename... Ts>
 struct get_type_index<T, Head, Ts...> : std::integral_constant<size_t, 1 + get_type_index<T, Ts...>::value>
-{
-};
+{};
 
 template<typename T, typename... Ts>
 struct has_type;
 
 template<typename T, typename... Ts>
 struct has_type<T, T, Ts...> : std::true_type
-{
-};
+{};
 
 template<typename T, typename Head, typename... Ts>
 struct has_type<T, Head, Ts...> : has_type<T, Ts...>
-{
-};
+{};
 
 template<typename T>
 struct has_type<T> : std::false_type
-{
-};
+{};
 
 template<typename Index, typename... Ts>
 struct get_type;
@@ -53,8 +48,7 @@ struct get_type<std::integral_constant<size_t, 0>, Head, Ts...>
 template<size_t index, typename Head, typename... Ts>
 struct get_type<std::integral_constant<size_t, index>, Head, Ts...>
   : get_type<std::integral_constant<size_t, index - 1>, Ts...>
-{
-};
+{};
 }
 
 template<typename... Ts>
@@ -64,13 +58,11 @@ struct type_list
 
     template<typename T>
     struct get_type_index : _internal::get_type_index<T, Ts...>
-    {
-    };
+    {};
 
     template<typename T>
     struct has_type : _internal::has_type<T, Ts...>
-    {
-    };
+    {};
 
     template<size_t index>
     struct get_type : _internal::get_type<std::integral_constant<size_t, index>, Ts...>
