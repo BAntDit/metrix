@@ -132,6 +132,36 @@
     return ::testing::AssertionSuccess();
 }
 
+::testing::AssertionResult type_list_template_specialization() {
+    static_assert(std::is_same<
+        typename easy_mp::type_list<uint16_t, uint32_t>::specialization_t<std::tuple>,
+            std::tuple<uint16_t, uint32_t>>::value);
+
+    return ::testing::AssertionSuccess();
+}
+
+::testing::AssertionResult type_list_flatten() {
+    static_assert(std::is_same<typename easy_mp::flatten<easy_mp::type_list<>>::type, easy_mp::type_list<>>::value);
+
+    static_assert(std::is_same<
+            typename easy_mp::flatten<easy_mp::type_list<easy_mp::type_list<uint16_t, uint32_t>>>::type,
+            easy_mp::type_list<uint16_t, uint32_t>>::value);
+
+    static_assert(std::is_same<
+            typename easy_mp::flatten<
+                    easy_mp::type_list<easy_mp::type_list<uint16_t>, easy_mp::type_list<uint32_t>>>::type,
+            easy_mp::type_list<uint16_t, uint32_t>>::value);
+
+    static_assert(std::is_same<
+            typename easy_mp::flatten<
+                    easy_mp::type_list<easy_mp::type_list<uint16_t>,
+                    easy_mp::type_list<uint32_t>,
+                    easy_mp::type_list<uint8_t, uint16_t>>>::type,
+            easy_mp::type_list<uint16_t, uint32_t, uint8_t, uint16_t>>::value);
+
+    return ::testing::AssertionSuccess();
+}
+
 TEST(TYPE_LIST_TEST, type_list_internals) {
     EXPECT_TRUE(type_list_test());
 }
@@ -170,4 +200,12 @@ TEST(LEFT_OUTER_JOIN, type_list_left_outer_join_test) {
 
 TEST(RIGHT_OUTER_JOIN, type_list_right_outer_join_test) {
     EXPECT_TRUE(type_list_right_outer_join());
+}
+
+TEST(TEMPLATE_SPECIALIZAATION, type_list_template_specialization_test) {
+    EXPECT_TRUE(type_list_template_specialization());
+}
+
+TEST(FLATTEN, type_list_flatten_test) {
+    EXPECT_TRUE(type_list_flatten());
 }
