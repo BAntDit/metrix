@@ -6,6 +6,7 @@
 #define EASY_MP_TYPE_LIST_H
 
 #include <cstddef>
+#include <tuple>
 #include <type_traits>
 
 namespace easy_mp {
@@ -55,6 +56,9 @@ template<typename... Ts>
 struct type_list
 {
     static constexpr size_t size = sizeof...(Ts);
+
+    template<template<typename...> typename templ>
+    using specialization_t = templ<Ts...>;
 
     template<typename T>
     struct get_type_index : _internal::get_type_index<T, Ts...>
