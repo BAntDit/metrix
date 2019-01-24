@@ -153,6 +153,27 @@ struct zip<type_list<HeadT, Ts...>, type_list<HeadU, Us...>>
       typename concat<type_list<type_pair<HeadT, HeadU>>, typename zip<type_list<Ts...>, type_list<Us...>>::type>::type;
 };
 
+template<typename... TypeLists>
+struct flatten;
+
+template<>
+struct flatten<type_list<>>
+{
+    using type = type_list<>;
+};
+
+template<typename... Ts>
+struct flatten<type_list<type_list<Ts...>>>
+{
+    using type = type_list<Ts...>;
+};
+
+template<typename... Ts, typename... Us, typename... Rest>
+struct flatten<type_list<type_list<Ts...>, type_list<Us...>, Rest...>>
+{
+    using type = typename concat<type_list<Ts..., Us...>, typename flatten<type_list<Rest...>>::type>::type;
+};
+
 template<typename T, typename U>
 struct subtract;
 
