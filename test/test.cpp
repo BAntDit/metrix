@@ -8,6 +8,7 @@
 #include <type_traits>
 
 #include "../src/type_list.h"
+#include "../src/enum.h"
 
 ::testing::AssertionResult type_list_test() {
     static_assert(easy_mp::type_list<uint8_t, uint16_t, int32_t>::size == 3);
@@ -158,6 +159,18 @@
                     easy_mp::type_list<uint32_t>,
                     easy_mp::type_list<uint8_t, uint16_t>>>::type,
             easy_mp::type_list<uint16_t, uint32_t, uint8_t, uint16_t>>::value);
+
+    return ::testing::AssertionSuccess();
+}
+
+::testing::AssertionResult enum_value_cast() {
+    enum class TestEnum: uint32_t
+    {
+        TEST_VAL_1 = 0,
+        TEST_VAL_2 = 1
+    };
+
+    static_assert(easy_mp::value_cast(TestEnum::TEST_VAL_2) == 1);
 
     return ::testing::AssertionSuccess();
 }

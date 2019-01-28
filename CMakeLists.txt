@@ -7,7 +7,10 @@ project(easy-mp VERSION 1.0.0.0)
 
 option(TESTS "whether needs to build tests" ON)
 
-set(PUBLIC_HEADERS src/type_list.h)
+set(PUBLIC_HEADERS
+    src/type_list.h
+    src/enum.h
+)
 
 add_library(${PROJECT_NAME} INTERFACE)
 
