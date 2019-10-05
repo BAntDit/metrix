@@ -187,6 +187,8 @@
             typename easy_mp::distinct<easy_mp::type_list<>>::type,
             easy_mp::type_list<>
     >::value);
+
+    return ::testing::AssertionSuccess();
 }
 
 ::testing::AssertionResult enum_value_cast() {
@@ -247,4 +249,8 @@ TEST(TEMPLATE_SPECIALIZAATION, type_list_template_specialization_test) {
 
 TEST(FLATTEN, type_list_flatten_test) {
     EXPECT_TRUE(type_list_flatten());
+}
+
+TEST(DISTINCT, type_list_distinct_test) {
+    EXPECT_TRUE(type_list_distinct());
 }
