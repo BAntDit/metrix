@@ -295,6 +295,50 @@ private:
 public:
     using type = typename subtract<type_list<Us...>, _intersect>::type;
 };
+
+template<typename T>
+struct distinct;
+
+template<typename... Us>
+struct distinct<type_pair<type_list<Us...>, type_list<>>>
+{
+    using type = type_list<Us...>;
+};
+
+template<typename... Us, typename HeadT>
+struct distinct<type_pair<type_list<HeadT, Us...>, std::false_type>>
+{
+    using type = typename concat<type_list<Us...>, type_list<HeadT>>::type;
+};
+
+template<typename... Us, typename HeadT>
+struct distinct<type_pair<type_list<HeadT, Us...>, std::true_type>>
+{
+    using type = type_list<Us...>;
+};
+
+template<typename... Us, typename HeadT, typename... Ts>
+struct distinct<type_pair<type_list<Us...>, type_list<HeadT, Ts...>>>
+{
+private:
+    using _unique = std::integral_constant<bool, type_list<Us...>::template has_type<HeadT>::value>;
+
+public:
+    using type = typename distinct<
+      type_pair<typename distinct<type_pair<type_list<HeadT, Us...>, _unique>>::type, type_list<Ts...>>>::type;
+};
+
+template<typename HeadT, typename... Ts>
+struct distinct<type_list<HeadT, Ts...>>
+{
+    using type = typename distinct<type_pair<type_list<>, type_list<HeadT, Ts...>>>::type;
+};
+
+template<>
+struct distinct<type_list<>>
+{
+    using type = type_list<>;
+};
 }
 
 #endif // EASY_MP_TYPE_LIST_H

@@ -163,6 +163,32 @@
     return ::testing::AssertionSuccess();
 }
 
+::testing::AssertionResult type_list_distinct() {
+    static_assert(std::is_same<
+        typename easy_mp::distinct<easy_mp::type_list<
+                std::integral_constant<uint32_t, 1>,
+                std::integral_constant<uint32_t, 1>,
+                std::integral_constant<uint32_t, 2>,
+                std::integral_constant<uint32_t, 3>>>::type,
+        easy_mp::type_list<
+                std::integral_constant<uint32_t, 1>,
+                std::integral_constant<uint32_t, 2>,
+                std::integral_constant<uint32_t, 3>>
+    >::value);
+
+    static_assert(std::is_same<
+            typename easy_mp::distinct<easy_mp::type_list<
+                    std::integral_constant<uint32_t, 1>>>::type,
+            easy_mp::type_list<
+                    std::integral_constant<uint32_t, 1>>
+    >::value);
+
+    static_assert(std::is_same<
+            typename easy_mp::distinct<easy_mp::type_list<>>::type,
+            easy_mp::type_list<>
+    >::value);
+}
+
 ::testing::AssertionResult enum_value_cast() {
     enum class TestEnum: uint32_t
     {
