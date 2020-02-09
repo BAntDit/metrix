@@ -9,6 +9,7 @@
 
 #include "../src/type_list.h"
 #include "../src/enum.h"
+#include "../src/containers.h"
 
 ::testing::AssertionResult type_list_test() {
     static_assert(easy_mp::type_list<uint8_t, uint16_t, int32_t>::size == 3);
@@ -203,6 +204,13 @@
     return ::testing::AssertionSuccess();
 }
 
+::testing::AssertionResult containers_is_iterable() {
+    static_assert(easy_mp::is_iterable_v<std::vector<int>>);
+    static_assert(!easy_mp::is_iterable_v<std::pair<int, int>>);
+
+    return ::testing::AssertionSuccess();
+}
+
 TEST(TYPE_LIST_TEST, type_list_internals) {
     EXPECT_TRUE(type_list_test());
 }
@@ -253,4 +261,8 @@ TEST(FLATTEN, type_list_flatten_test) {
 
 TEST(DISTINCT, type_list_distinct_test) {
     EXPECT_TRUE(type_list_distinct());
+}
+
+TEST(IS_ITERABLE, containers_is_iterable_test) {
+    EXPECT_TRUE(containers_is_iterable());
 }
