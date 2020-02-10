@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <cstddef>
 #include <cstdint>
+#include <list>
 #include <type_traits>
 
 #include "../src/type_list.h"
@@ -211,6 +212,13 @@
     return ::testing::AssertionSuccess();
 }
 
+::testing::AssertionResult containers_is_contiguous() {
+    static_assert(easy_mp::is_contiguous_v<std::vector<int>>);
+    static_assert(!easy_mp::is_contiguous_v<std::list<int>>);
+
+    return ::testing::AssertionSuccess();
+}
+
 TEST(TYPE_LIST_TEST, type_list_internals) {
     EXPECT_TRUE(type_list_test());
 }
@@ -266,3 +274,8 @@ TEST(DISTINCT, type_list_distinct_test) {
 TEST(IS_ITERABLE, containers_is_iterable_test) {
     EXPECT_TRUE(containers_is_iterable());
 }
+
+TEST(IS_CONTIGUOUS, containers_is_contiguous_test) {
+    EXPECT_TRUE(containers_is_contiguous());
+}
+
