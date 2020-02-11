@@ -19,11 +19,11 @@ template<typename T>
 inline constexpr bool is_iterable_v = is_iterable<T>::value;
 
 template<typename T, typename = void>
-struct is_contiguous: std::false_type
+struct is_contiguous : std::false_type
 {};
 
 template<typename T>
-struct is_contiguous<T, std::void_t<decltype(std::declval<T>().data())>>: std::true_type
+struct is_contiguous<T, std::void_t<decltype(std::declval<T>().data())>> : std::true_type
 {};
 
 template<typename T>
