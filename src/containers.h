@@ -5,6 +5,8 @@
 #ifndef EASY_MP_CONTAINERS_H
 #define EASY_MP_CONTAINERS_H
 
+#include "type_list.h"
+
 namespace easy_mp {
 namespace _internal {
 template<typename T, typename MaxSize>
