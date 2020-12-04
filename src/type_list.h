@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <tuple>
 #include <type_traits>
+#include <variant>
 
 namespace easy_mp {
 namespace _internal {
