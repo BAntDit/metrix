@@ -219,6 +219,31 @@
     return ::testing::AssertionSuccess();
 }
 
+::testing::AssertionResult to_variant()
+{
+    static_assert(
+      std::is_same_v<std::variant<uint16_t, float>, easy_mp::to_variant_t<easy_mp::type_list<uint16_t, float>>>);
+
+    return ::testing::AssertionSuccess();
+}
+
+::testing::AssertionResult array_list()
+{
+    static_assert(std::is_same_v<
+      easy_mp::type_list<std::array<uint16_t, 1>,
+      std::array<uint16_t, 2>>, easy_mp::array_list_t<uint16_t, 2>>);
+
+    return ::testing::AssertionSuccess();
+}
+
+TEST(ARRAY_LIST, array_list_test) {
+    EXPECT_TRUE(array_list());
+}
+
+TEST(TYPE_LIST_TO_VARIANT, type_list_to_variant) {
+    EXPECT_TRUE(to_variant());
+}
+
 TEST(TYPE_LIST_TEST, type_list_internals) {
     EXPECT_TRUE(type_list_test());
 }
