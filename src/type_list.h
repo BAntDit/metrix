@@ -356,7 +356,7 @@ struct to_variant<type_list<T...>>
 };
 
 template<typename... T>
-using to_variant_t = to_variant<T...>;
+using to_variant_t = typename to_variant<T...>::type;
 }
 
 #endif // EASY_MP_TYPE_LIST_H
