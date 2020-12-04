@@ -339,6 +339,24 @@ struct distinct<type_list<>>
 {
     using type = type_list<>;
 };
+
+template<typename T>
+struct to_variant;
+
+template<>
+struct to_variant<type_list<>>
+{
+    using type = std::variant<std::monostate>;
+};
+
+template<typename... T>
+struct to_variant<type_list<T...>>
+{
+    using type = std::variant<T...>;
+};
+
+template<typename... T>
+using to_variant_t = to_variant<T...>;
 }
 
 #endif // EASY_MP_TYPE_LIST_H
