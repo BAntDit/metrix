@@ -11,6 +11,7 @@
 #include "../src/type_list.h"
 #include "../src/enum.h"
 #include "../src/containers.h"
+#include "../src/type_traits.h"
 
 ::testing::AssertionResult type_list_test() {
     static_assert(easy_mp::type_list<uint8_t, uint16_t, int32_t>::size == 3);
@@ -236,6 +237,14 @@
     return ::testing::AssertionSuccess();
 }
 
+::testing::AssertionResult type_traits_is_specialization_of()
+{
+    static_assert(easy_mp::is_specialization_of_v<std::variant<uint32_t, float>, std::variant>);
+    static_assert(!easy_mp::is_specialization_of_v<std::variant<uint32_t, float>, std::tuple>);
+
+    return ::testing::AssertionSuccess();
+}
+
 TEST(ARRAY_LIST, array_list_test) {
     EXPECT_TRUE(array_list());
 }
@@ -302,5 +311,9 @@ TEST(IS_ITERABLE, containers_is_iterable_test) {
 
 TEST(IS_CONTIGUOUS, containers_is_contiguous_test) {
     EXPECT_TRUE(containers_is_contiguous());
+}
+
+TEST(IS_SPECIALIZATION_OF, type_traits_is_specialization_of_test) {
+    EXPECT_TRUE(type_traits_is_specialization_of());
 }
 
