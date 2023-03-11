@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-project(easy-mp VERSION 1.4.0.0)
+project(easy-mp VERSION 1.5.0.0)
 
 option(TESTS "whether needs to build tests" ON)
 
@@ -12,6 +12,7 @@ set(PUBLIC_HEADERS
     src/enum.h
     src/containers.h
     src/type_traits.h
+    src/algorithm.h
 )
 
 add_library(${PROJECT_NAME} INTERFACE)

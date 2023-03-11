@@ -3,7 +3,6 @@
 //
 
 #include <gtest/gtest.h>
-#include <cstddef>
 #include <cstdint>
 #include <list>
 #include <type_traits>
@@ -12,6 +11,7 @@
 #include "../src/enum.h"
 #include "../src/containers.h"
 #include "../src/type_traits.h"
+#include "../src/algorithm.h"
 
 ::testing::AssertionResult type_list_test() {
     static_assert(easy_mp::type_list<uint8_t, uint16_t, int32_t>::size == 3);
@@ -245,6 +245,18 @@
     return ::testing::AssertionSuccess();
 }
 
+::testing::AssertionResult algorithm_max()
+{
+    static_assert(easy_mp::max(3, 8, 6) == 8);
+    return ::testing::AssertionSuccess();
+}
+
+::testing::AssertionResult algorithm_min()
+{
+    static_assert(easy_mp::min(3, 8, 6) == 3);
+    return ::testing::AssertionSuccess();
+}
+
 TEST(ARRAY_LIST, array_list_test) {
     EXPECT_TRUE(array_list());
 }
@@ -315,5 +327,13 @@ TEST(IS_CONTIGUOUS, containers_is_contiguous_test) {
 
 TEST(IS_SPECIALIZATION_OF, type_traits_is_specialization_of_test) {
     EXPECT_TRUE(type_traits_is_specialization_of());
+}
+
+TEST(ALGORITHM_MAX, algorithm_max_test) {
+    EXPECT_TRUE(algorithm_max());
+}
+
+TEST(ALGORITHM_MIN, algorithm_min_test) {
+    EXPECT_TRUE(algorithm_min());
 }
 
