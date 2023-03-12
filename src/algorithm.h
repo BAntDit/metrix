@@ -5,10 +5,12 @@
 #ifndef EASY_MP_ALGORITHM_H
 #define EASY_MP_ALGORITHM_H
 
-namespace easy_mp
-{
+namespace easy_mp {
 template<typename T>
-constexpr auto max(T a, T b) -> T { return std::max(a, b); }
+constexpr auto max(T a, T b) -> T
+{
+    return std::max(a, b);
+}
 
 template<typename T, typename... Rest>
 constexpr auto max(T a, T b, Rest... rest) -> T
@@ -17,7 +19,10 @@ constexpr auto max(T a, T b, Rest... rest) -> T
 }
 
 template<typename T>
-constexpr auto min(T a, T b) -> T { return std::min(a, b); }
+constexpr auto min(T a, T b) -> T
+{
+    return std::min(a, b);
+}
 
 template<typename T, typename... Rest>
 constexpr auto min(T a, T b, Rest... rest) -> T
