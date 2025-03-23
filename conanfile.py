@@ -15,6 +15,9 @@ class metatrixReceip(ConanFile):
     def requirements(self):
         self.requires("gtest/[~1.16]")
 
+    def layout(self):
+        cmake_layout(self)
+
     def generate(self):
         deps = CMakeDeps(self)
         deps.generate()

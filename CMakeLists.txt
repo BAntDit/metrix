@@ -24,7 +24,7 @@ target_include_directories(
 
 add_subdirectory("tests")
 
-foreach (header ${PUBLIC_HEADERS})
+foreach (header ${HEADER_FILES})
 install(
     FILES ${header}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
