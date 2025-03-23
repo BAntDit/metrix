@@ -2,12 +2,12 @@
 // Created by bantdit on 2/9/20.
 //
 
-#ifndef EASY_MP_CONTAINERS_H
-#define EASY_MP_CONTAINERS_H
+#ifndef METRIX_CONTAINERS_H
+#define METRIX_CONTAINERS_H
 
 #include "type_list.h"
 
-namespace easy_mp {
+namespace metrix {
 namespace _internal {
 template<typename T, typename MaxSize>
 struct _array_list;
@@ -52,4 +52,4 @@ template<typename T, size_t Size>
 using array_list_t = typename array_list<T, Size>::type;
 }
 
-#endif // EASY_MP_CONTAINERS_H
+#endif // METRIX_CONTAINERS_H

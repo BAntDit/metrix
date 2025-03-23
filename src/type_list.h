@@ -2,15 +2,15 @@
 // Created by bantdit on 11/5/18.
 //
 
-#ifndef EASY_MP_TYPE_LIST_H
-#define EASY_MP_TYPE_LIST_H
+#ifndef METRIX_TYPE_LIST_H
+#define METRIX_TYPE_LIST_H
 
 #include <cstddef>
 #include <tuple>
 #include <type_traits>
 #include <variant>
 
-namespace easy_mp {
+namespace metrix {
 namespace _internal {
 template<typename T, typename... Ts>
 struct get_type_index;
@@ -360,4 +360,4 @@ template<typename... T>
 using to_variant_t = typename to_variant<T...>::type;
 }
 
-#endif // EASY_MP_TYPE_LIST_H
+#endif // METRIX_TYPE_LIST_H

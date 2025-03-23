@@ -2,10 +2,10 @@
 // Created by anton on 3/11/23.
 //
 
-#ifndef EASY_MP_ALGORITHM_H
-#define EASY_MP_ALGORITHM_H
+#ifndef METRIX_ALGORITHM_H
+#define METRIX_ALGORITHM_H
 
-namespace easy_mp {
+namespace metrix {
 template<typename T>
 constexpr auto max(T a, T b) -> T
 {
@@ -31,4 +31,4 @@ constexpr auto min(T a, T b, Rest... rest) -> T
 }
 }
 
-#endif // EASY_MP_ALGORITHM_H
+#endif // METRIX_ALGORITHM_H

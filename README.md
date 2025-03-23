@@ -1,4 +1,4 @@
 
-# easy-mp
+# metrix
 
-meta-programming library
+meta-programming tricks library

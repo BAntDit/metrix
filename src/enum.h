@@ -2,12 +2,12 @@
 // Created by bantdit on 1/28/19.
 //
 
-#ifndef EASY_MP_ENUM_H
-#define EASY_MP_ENUM_H
+#ifndef METRIX_ENUM_H
+#define METRIX_ENUM_H
 
 #include <type_traits>
 
-namespace easy_mp {
+namespace metrix {
 template<typename E>
 constexpr auto value_cast(E e) -> std::underlying_type_t<E>
 {
@@ -15,4 +15,4 @@ constexpr auto value_cast(E e) -> std::underlying_type_t<E>
 }
 }
 
-#endif // EASY_MP_ENUM_H
+#endif // METRIX_ENUM_H

@@ -1,12 +1,14 @@
 
 cmake_minimum_required(VERSION 3.10)
+project("metrix.test")
 
-project("type_list.test")
+find_package(GTest REQUIRED)
+enable_testing()
 
 add_executable(${PROJECT_NAME} test.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD 17
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS OFF
 
@@ -28,4 +30,4 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} gtest gtest_main -pthread)
 
-add_test(NAME type-list-test COMMAND ${PROJECT_NAME})
+add_test(NAME metrix-test COMMAND ${PROJECT_NAME})

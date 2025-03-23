@@ -3,21 +3,18 @@ cmake_minimum_required(VERSION 3.10)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-project(easy-mp VERSION 1.5.0.0)
+project(metrix VERSION 1.5.0.0)
 
 option(TESTS "whether needs to build tests" ON)
 
-set(PUBLIC_HEADERS
-    src/type_list.h
-    src/enum.h
-    src/containers.h
-    src/type_traits.h
-    src/algorithm.h
-)
+file(GLOB_RECURSE HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
+file(GLOB TEST_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h")
+
+include(ClangFormat.cmake)
+set(ALL_FILES_TO_ADJUST_CODESTYLE ${HEADER_FILES} ${TEST_HEADERS})
+CODE_STYLE_CORRECTION("${ALL_FILES_TO_ADJUST_CODESTYLE}")
 
 add_library(${PROJECT_NAME} INTERFACE)
-
-# set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
 
 target_include_directories(
     ${PROJECT_NAME} INTERFACE
@@ -25,20 +22,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
-set(ALL_SOURCES_FOR_STYLE_CORRECTION ${PUBLIC_HEADERS})
-
-include(ClangFormat.cmake)
-CODE_STYLE_CORRECTION("${ALL_SOURCES_FOR_STYLE_CORRECTION}")
-
-if (TESTS)
-
-    find_package(GTest REQUIRED)
-
-    enable_testing()
-
-    add_subdirectory("test")
-
-endif()
+add_subdirectory("tests")
 
 foreach (header ${PUBLIC_HEADERS})
 install(
