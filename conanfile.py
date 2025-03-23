@@ -5,11 +5,12 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 class metatrixReceip(ConanFile):
     name = "metrix"
     version = "1.5.0.0"
+    url = "https://github.com/BAntDit/easy-mp"
     description = "Meta programming tricks library"
 
     settings = "build_type"
 
-    exports_sources = "CMakeLists.txt", "src/*.h"
+    exports_sources = "CMakeLists.txt", "*.cmake", ".clang-format", ".md", "src/*.h", "tests/*"
 
     def requirements(self):
         self.requires("gtest/[~1.16]")
