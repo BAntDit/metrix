@@ -1,8 +1,4 @@
 cmake_minimum_required(VERSION 3.10)
-
-include(GNUInstallDirs)
-include(CMakePackageConfigHelpers)
-
 project(metrix VERSION 1.5.0.0)
 
 option(TESTS "whether needs to build tests" ON)
@@ -22,39 +18,46 @@ target_include_directories(
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
-add_subdirectory("tests")
+# Installation configuration
+include(GNUInstallDirs)
 
-foreach (header ${HEADER_FILES})
-install(
-    FILES ${header}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
-)
-endforeach()
-
-install(
-    TARGETS ${PROJECT_NAME}
-    EXPORT  ${PROJECT_NAME}
-    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    # PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
+# Install headers
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+        FILES_MATCHING PATTERN "*.h"
 )
 
-install(
-    EXPORT ${PROJECT_NAME}
-    FILE ${PROJECT_NAME}Config.cmake
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/CMake
+# Install the export set
+install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}Targets
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-export(
-    EXPORT ${PROJECT_NAME}
-    FILE ${PROJECT_NAME}Config.cmake
+install(EXPORT ${PROJECT_NAME}Targets
+        FILE ${PROJECT_NAME}Targets.cmake
+        NAMESPACE ${PROJECT_NAME}::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
+
+# Create a config file
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
 write_basic_package_version_file(
-    ${PROJECT_NAME}ConfigVersion.cmake
-    COMPATIBILITY SameMajorVersion
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
 )
 
-install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/CMake"
+# Install the config files
+install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
+
+add_subdirectory("tests")

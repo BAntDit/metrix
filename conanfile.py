@@ -10,7 +10,7 @@ class metatrixReceip(ConanFile):
 
     settings = "build_type"
 
-    exports_sources = "CMakeLists.txt", "*.cmake", ".clang-format", ".md", "src/*.h", "tests/*"
+    exports_sources = "CMakeLists.txt", "*.cmake", ".clang-format", ".md", "src/*.h", "tests/*", "cmake/*"
 
     def requirements(self):
         self.requires("gtest/[~1.16]")
@@ -34,6 +34,10 @@ class metatrixReceip(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["metrix"]
+        self.cpp_info.set_property("cmake_file_name", "metrix")
+        self.cpp_info.set_property("cmake_target_name", "metrix::metrix")
+
+        # For header-only libraries, no libs needed
+        self.cpp_info.libs = []
 
 
