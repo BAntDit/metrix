@@ -17,6 +17,6 @@ manager to create and share all your native binaries.
 
 2. Clone project: `git clone git@github.com:BAntDit/easy-mp.git` 
 
-3. Install: `conan install . -s build_type=<Configuration> --build=missing --output-folder=<Out Folder>`
+3. Install dependencies: `conan install . -s build_type=<Configuration> --build=missing --output-folder=<Out Folder>`
 
 4. Deploy to local conan cache: `conan create . -s build_type=<Configuration>`
