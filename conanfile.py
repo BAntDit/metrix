@@ -8,20 +8,36 @@ class metatrixReceip(ConanFile):
     url = "https://github.com/BAntDit/easy-mp"
     description = "Meta programming tricks library"
 
-    settings = "build_type"
+    settings = "arch", "build_type", "compiler", "os"
 
     exports_sources = "CMakeLists.txt", "*.cmake", ".clang-format", ".md", "src/*.h", "tests/*", "cmake/*"
 
     def requirements(self):
         self.requires("gtest/[~1.16]")
 
-    def layout(self):
-        cmake_layout(self)
+    def configure(self):
+        if self.settings.compiler == "msvc":
+            del self.settings.compiler.runtime
 
     def generate(self):
         deps = CMakeDeps(self)
         deps.generate()
         tc = CMakeToolchain(self)
+
+        if self.settings.os == "Windows":
+            if self.settings.compiler == "msvc":
+                tc.generator = "Visual Studio 17 2022"
+            else:
+                try:
+                    tc.generator = "Ninja"
+                except:
+                    tc.generator = "Unix Makefiles"
+        else:
+            try:
+                tc.generator = "Ninja"
+            except:
+                tc.generator = "Unix Makefiles"
+
         tc.generate()
 
     def build(self):
