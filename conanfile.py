@@ -5,23 +5,36 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 class metatrixReceip(ConanFile):
     name = "metrix"
     version = "1.5.0.0"
-    url = "https://github.com/BAntDit/easy-mp"
+    url = "https://github.com/BAntDit/metrix"
     description = "Meta programming tricks library"
 
-    settings = "build_type"
+    settings = "os", "compiler", "arch", "build_type"
 
     exports_sources = "CMakeLists.txt", "*.cmake", ".clang-format", ".md", "src/*.h", "tests/*", "cmake/*"
+
+    def build_requirements(self):
+        if self.settings.compiler != "msvc":
+            self.tool_requires("ninja/[>=1.11.0]")
 
     def requirements(self):
         self.requires("gtest/[~1.16]")
 
-    def layout(self):
-        cmake_layout(self)
+    def configure(self):
+        self.settings.compiler.cppstd = "20"
+
+    def package_id(self):
+        self.info.settings.compiler.cppstd = "20"
 
     def generate(self):
         deps = CMakeDeps(self)
         deps.generate()
         tc = CMakeToolchain(self)
+
+        if self.settings.compiler == "msvc":
+            tc.generator = "Visual Studio"
+        else:
+            tc.generator = "Ninja"
+
         tc.generate()
 
     def build(self):

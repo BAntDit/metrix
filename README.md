@@ -15,8 +15,10 @@ manager to create and share all your native binaries.
 
 1. Install conan: [Installation instruction](https://docs.conan.io/2/installation.html)
 
-2. Clone project: `git clone git@github.com:BAntDit/easy-mp.git` 
+2. Clone project: `git clone git@github.com:BAntDit/metrix.git` 
 
-3. Install dependencies: `conan install . -s build_type=<Configuration> --build=missing --output-folder=<Out Folder>`
+3. Install dependencies: `conan install . -s compiler.cppstd=20 -s build_type=<Configuration> --build=missing --output-folder=<Out Folder>`
 
-4. Deploy to local conan cache: `conan create . -s build_type=<Configuration>`
+4. Generate: `cmake --preset conan-release -G Ninja`
+
+5. Deploy to local conan cache: `conan create . -s build_type=<Configuration> -s compiler.cppstd=20`
