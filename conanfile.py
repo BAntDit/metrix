@@ -1,6 +1,7 @@
 
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
+from conan.errors import ConanInvalidConfiguration
 
 class metatrixReceip(ConanFile):
     name = "metrix"
@@ -11,6 +12,11 @@ class metatrixReceip(ConanFile):
     settings = "os", "compiler", "arch", "build_type"
 
     exports_sources = "CMakeLists.txt", "*.cmake", ".clang-format", ".md", "src/*.h", "tests/*", "cmake/*"
+
+    def validate(self):
+        if self.settings.compiler == "msvc":
+            if int(str(self.settings.compiler.version)) < 192:
+                raise ConanInvalidConfiguration("Only Visual Studio 2019 (MSVC 16) and higher is supported!")
 
     def build_requirements(self):
         if self.settings.compiler != "msvc":
@@ -31,7 +37,7 @@ class metatrixReceip(ConanFile):
         tc = CMakeToolchain(self)
 
         if self.settings.compiler == "msvc":
-            tc.generator = "Visual Studio"
+            tc.generator = "Visual Studio 17 2022"
         else:
             tc.generator = "Ninja"
 
