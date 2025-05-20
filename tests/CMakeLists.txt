@@ -8,7 +8,7 @@ enable_testing()
 add_executable(${PROJECT_NAME} test.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD 20
+    CXX_STANDARD ${REQUIRED_CXX_STANDARD}
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS OFF
 

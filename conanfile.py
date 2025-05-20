@@ -41,6 +41,7 @@ class metatrixReceip(ConanFile):
         else:
             tc.generator = "Ninja"
 
+        tc.variables["REQUIRED_CXX_STANDARD"] = "20"
         tc.generate()
 
     def build(self):
