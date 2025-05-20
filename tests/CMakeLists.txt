@@ -28,6 +28,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
             )
 endif()
 
-target_link_libraries(${PROJECT_NAME} gtest gtest_main -pthread)
+target_link_libraries(${PROJECT_NAME} PRIVATE GTest::gtest)
+target_link_libraries(${PROJECT_NAME} PRIVATE GTest::gtest_main)
 
 add_test(NAME metrix-test COMMAND ${PROJECT_NAME})
