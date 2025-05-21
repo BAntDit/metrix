@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(metrix VERSION 1.5.0.0)
 
-option(TESTS "whether needs to build tests" ON)
-
 file(GLOB_RECURSE HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
 file(GLOB TEST_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h")
 
