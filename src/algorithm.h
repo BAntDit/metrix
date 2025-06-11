@@ -5,6 +5,14 @@
 #ifndef METRIX_ALGORITHM_H
 #define METRIX_ALGORITHM_H
 
+#if defined(max)
+#undef max
+#endif
+
+#if defined(min)
+#undef min
+#endif
+
 namespace metrix {
 template<typename T>
 constexpr auto max(T a, T b) -> T
