@@ -5,7 +5,7 @@ from conan.errors import ConanInvalidConfiguration
 
 class metatrixReceip(ConanFile):
     name = "metrix"
-    version = "1.5.0.0"
+    version = "1.6.0.0"
     url = "https://github.com/BAntDit/metrix"
     description = "Meta programming tricks library"
 
