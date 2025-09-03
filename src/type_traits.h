@@ -24,7 +24,7 @@ template<typename MemberFunctionPtr>
 struct member_function_traits;
 
 template<typename Ret, class Class, typename... Args>
-struct member_function_traits<Ret (Class::*)(Args&&...)>
+struct member_function_traits<Ret (Class::*)(Args...)>
 {
 	using return_type = Ret;
 	using argument_type_list = type_list<Args...>;
