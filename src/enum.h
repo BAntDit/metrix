@@ -5,8 +5,8 @@
 #ifndef METRIX_ENUM_H
 #define METRIX_ENUM_H
 
-#include <type_traits>
 #include <limits>
+#include <type_traits>
 
 namespace metrix {
 namespace _internal {
@@ -68,19 +68,22 @@ struct enum_bits
     constexpr operator type_t() const { return value; }
 
     template<typename T>
-    constexpr auto cast_to() const -> T requires std::is_convertible_v<type_t, T>
+    constexpr auto cast_to() const -> T
+        requires std::is_convertible_v<type_t, T>
     {
         return static_cast<T>(value);
     }
 
     template<typename T>
-    constexpr auto operator==(T rhs) const -> bool requires std::is_convertible_v<T, type_t>
+    constexpr auto operator==(T rhs) const -> bool
+        requires std::is_convertible_v<T, type_t>
     {
         return value == static_cast<type_t>(rhs);
     }
 
     template<typename T>
-    constexpr auto operator!=(T rhs) const -> bool requires std::is_convertible_v<T, type_t>
+    constexpr auto operator!=(T rhs) const -> bool
+        requires std::is_convertible_v<T, type_t>
     {
         return value != static_cast<type_t>(rhs);
     }

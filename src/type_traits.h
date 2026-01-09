@@ -33,7 +33,7 @@ template<MethodOverloadingByRefType RefType,
          bool IsNoExcept,
          bool IsVolatile,
          typename Ret,
-         typename T,
+         typename Class,
          typename... Args>
 struct member_function_details
 {
@@ -41,9 +41,9 @@ struct member_function_details
     using argument_type_list = type_list<Args...>;
     using class_type = Class;
 
-    constexpr static bool is_constant : 1 = IsConstant;
-    constexpr static bool is_noexcept : 1 = IsNoExcept;
-    constexpr static bool is_volatile : 1 = IsVolatile;
+    constexpr static bool is_constant = IsConstant;
+    constexpr static bool is_noexcept = IsNoExcept;
+    constexpr static bool is_volatile = IsVolatile;
     constexpr static MethodOverloadingByRefType overloading_by_ref_type = RefType;
 };
 }
@@ -68,7 +68,7 @@ struct member_function_traits<Ret (Class::*)(Args...)&>
 {};
 
 template<typename Ret, class Class, typename... Args>
-struct member_function_traits<Ret (Class::*)(Args...)& noexcept>
+struct member_function_traits<Ret (Class::*)(Args...) & noexcept>
   : _internal::
       member_function_details<MethodOverloadingByRefType::ForLvReference, false, true, false, Ret, Class, Args...>
 {};
@@ -80,7 +80,7 @@ struct member_function_traits<Ret (Class::*)(Args...) &&>
 {};
 
 template<typename Ret, class Class, typename... Args>
-struct member_function_traits<Ret (Class::*)(Args...)&& noexcept>
+struct member_function_traits<Ret (Class::*)(Args...) && noexcept>
   : _internal::
       member_function_details<MethodOverloadingByRefType::ForRvReference, false, true, false, Ret, Class, Args...>
 {};
@@ -102,13 +102,13 @@ struct member_function_traits<Ret (Class::*)(Args...) const&>
 {};
 
 template<typename Ret, class Class, typename... Args>
-struct member_function_traits<Ret (Class::*)(Args...) const&& noexcept>
+struct member_function_traits<Ret (Class::*)(Args...) const && noexcept>
   : _internal::
       member_function_details<MethodOverloadingByRefType::ForRvReference, true, true, false, Ret, Class, Args...>
 {};
 
 template<typename Ret, class Class, typename... Args>
-struct member_function_traits<Ret (Class::*)(Args...) const& noexcept>
+struct member_function_traits<Ret (Class::*)(Args...) const & noexcept>
   : _internal::
       member_function_details<MethodOverloadingByRefType::ForLvReference, true, true, false, Ret, Class, Args...>
 {};
@@ -158,25 +158,25 @@ struct member_function_traits<Ret (Class::*)(Args...) const volatile&>
 {};
 
 template<typename Ret, class Class, typename... Args>
-struct member_function_traits<Ret (Class::*)(Args...) const volatile& noexcept>
+struct member_function_traits<Ret (Class::*)(Args...) const volatile & noexcept>
   : _internal::
       member_function_details<MethodOverloadingByRefType::ForLvReference, true, true, true, Ret, Class, Args...>
 {};
 
 template<typename Ret, class Class, typename... Args>
-struct member_function_traits<Ret (Class::*)(Args...) volatile& noexcept>
+struct member_function_traits<Ret (Class::*)(Args...) volatile & noexcept>
   : _internal::
       member_function_details<MethodOverloadingByRefType::ForLvReference, false, true, true, Ret, Class, Args...>
 {};
 
 template<typename Ret, class Class, typename... Args>
-struct member_function_traits<Ret (Class::*)(Args...) volatile&& noexcept>
+struct member_function_traits<Ret (Class::*)(Args...) volatile && noexcept>
   : _internal::
       member_function_details<MethodOverloadingByRefType::ForRvReference, false, true, true, Ret, Class, Args...>
 {};
 
 template<typename Ret, class Class, typename... Args>
-struct member_function_traits<Ret (Class::*)(Args...) const volatile&& noexcept>
+struct member_function_traits<Ret (Class::*)(Args...) const volatile && noexcept>
   : _internal::
       member_function_details<MethodOverloadingByRefType::ForRvReference, true, true, true, Ret, Class, Args...>
 {};
@@ -197,17 +197,17 @@ template<typename MemberFunctionPtr>
 using member_function_class_type_t = typename member_function_traits<MemberFunctionPtr>::class_type;
 
 template<typename MemberFunctionPtr>
-constexpr bool member_function_is_constant_v = typename member_function_traits<MemberFunctionPtr>::is_constant;
+constexpr bool member_function_is_constant_v = member_function_traits<MemberFunctionPtr>::is_constant;
 
 template<typename MemberFunctionPtr>
-constexpr bool member_function_is_noexcept_v = typename member_function_traits<MemberFunctionPtr>::is_noexcept;
+constexpr bool member_function_is_noexcept_v = member_function_traits<MemberFunctionPtr>::is_noexcept;
 
 template<typename MemberFunctionPtr>
-constexpr bool member_function_is_volatile_v = typename member_function_traits<MemberFunctionPtr>::is_volatile;
+constexpr bool member_function_is_volatile_v = member_function_traits<MemberFunctionPtr>::is_volatile;
 
 template<typename MemberFunctionPtr>
 constexpr MethodOverloadingByRefType member_function_overload_for_ref_v =
-  typename member_function_traits<MemberFunctionPtr>::overloading_by_ref_type;
+  member_function_traits<MemberFunctionPtr>::overloading_by_ref_type;
 }
 
 #endif // METRIX_TYPE_TRAITS_H
