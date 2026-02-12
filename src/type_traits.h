@@ -7,6 +7,7 @@
 
 #include "type_list.h"
 #include <type_traits>
+#include <cstdint>
 
 namespace metrix {
 template<typename T, template<typename...> typename Primary>

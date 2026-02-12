@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(metrix VERSION 1.8.1.0)
+project(metrix VERSION 1.8.2.0)
 
 file(GLOB_RECURSE HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
 file(GLOB TEST_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h")
